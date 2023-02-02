@@ -2,6 +2,8 @@ const arg_a = document.getElementById("argument_a");
 const arg_b = document.getElementById("argument_b");
 const math_op = document.getElementById("math_operation");
 const result = document.getElementById("example_result");
+const corAnsw = document.getElementById("correct_answer");
+const attempts = document.getElementById("attempts_counter");
 
 function calculate(operator, a, b) {
   if (operator == "+") {
@@ -18,15 +20,23 @@ function calculate(operator, a, b) {
   }
 }
 
+let attemptsCounter = 0;
+let correctAnswers = 0;
+
 function checkExample() {
+  attemptsCounter++;
   if (check()) {
+    correctAnswers++;
     alert("Верно");
     result.value = null;
     generateExample();
   } else {
     alert("Неверно");
   }
+  corAnsw.textContent = correctAnswers;
+  attempts.textContent = attemptsCounter;
 }
+
 
 function check() {
   const a = parseInt(arg_a.textContent);
@@ -54,7 +64,13 @@ function generateExample() {
     let b = getRand(1, 10);
     a -= a % b;
     arg_b.textContent = b;
-  } else if (math_op.textContent == "+" || math_op.textContent == "-") {
+  } else if (math_op.textContent == "-") {
+    let b = getRand(100, 1000);
+    if(b > a) {
+      [a, b] = [b, a];
+    }
+    arg_b.textContent = b;
+  } else if (math_op.textContent == "+") {
     arg_b.textContent = getRand(100, 1000);
   } else {
     arg_b.textContent = getRand(0, 10);
